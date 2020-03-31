@@ -9,26 +9,26 @@ class RegisterUserForm(FlaskForm):
     """Form for registering users."""
     username = StringField(
         "Username",
-        validators=[InputRequired()],
+        validators=[InputRequired(), Length(max=20)],
     )
 
     password = PasswordField(
         "Password",
-        validators=[InputRequired()],
+        validators=[InputRequired(), Length(max=100)],
     )
 
     email = TextField(
         "Email",
-        validators=[InputRequired()],
+        validators=[InputRequired(), Length(max=50)],
     )
 
     first_name = TextField(
         "first_name",
-        validators=[InputRequired()],
+        validators=[InputRequired(),Length(max=30) ],
     )
     last_name = TextField(
         "last_name",
-        validators=[InputRequired()],
+        validators=[InputRequired(),Length(max=30)],
     )
 
 
@@ -43,4 +43,17 @@ class LoginUserForm(FlaskForm):
     password = PasswordField(
         "Password",
         validators=[InputRequired()],
+    )
+
+class FeedbackForm(FlaskForm):
+    """Form for feedbacks"""
+
+    title = StringField(
+        "Title",
+        validators=[InputRequired(), Length(max=100)],
+    )
+
+    content = TextAreaField(
+        "Content",
+        validators=[InputRequired(), Length(max=500)],
     )

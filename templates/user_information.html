@@ -7,5 +7,25 @@
   <li>{{user.first_name}}</li>
   <li>{{user.last_name}}</li>
 </ul>
+
+<ul>
+  {% for feedback in feedbacks %}
+
+  <li>
+    <h3>{{feedback.title}}</h3>
+    <button action="">Edit</button>
+    <h5>{{feedback.content}}</h5>
+  </li>
+
+  {% endfor %}
+</ul>
+
+<form action="/users/{{user.username}}/feedback/add">
+  <button> Add feedback</button>
+</form>
+
+<form>
+  <button formaction="/users/{{user.username}}/delete" formmethod="POST">Delete</button>
+</form>
   
 {% endblock %}

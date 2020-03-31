@@ -1,8 +1,8 @@
 
 from flask import Flask, request, session, render_template, redirect
-from models import db, connect_db, User
+from models import db, connect_db, User, Feedback
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import RegisterUserForm, LoginUserForm
+from forms import RegisterUserForm, LoginUserForm, FeedbackForm
 
 app = Flask(__name__)
 
@@ -80,12 +80,14 @@ def user_login(username):
     # if "user_username" in session and session["user_username"] == username:
     #     user = User.query.get_or_404(username)
     #     return render_template('user_information.html', user=user)
+    # breakpoint()
 
     if "user_username" not in session or session["user_username"] != username:
         return redirect('/')
 
-    user = User.query.get_or_404(username)
-    return render_template('user_information.html', user=user)
+    user = User.query.get(username)
+    feedbacks = user.feedbacks
+    return render_template('user_information.html', user=user, feedbacks = feedbacks)
 
 
 @app.route("/secret")
@@ -104,3 +106,43 @@ def logout_form():
     session.pop("user_username")
 
     return redirect('/')
+
+@app.route("/users/<username>/delete", methods=["POST"])
+def delete_user(username):
+    """Delete the user from the db and redirect to "/" """
+
+    if "user_username" not in session or session["user_username"] != username:
+        return redirect('/')
+    
+    user = User.query.get(username)
+    db.session.delete(user)
+    db.session.commit()
+    session.pop("user_username")
+
+    return redirect("/")
+
+@app.route("/users/<username>/feedback/add", methods=["GET","POST"])
+def feedback_form(username):
+    """Display a form to add feedback."""
+
+    if "user_username" not in session or session["user_username"] != username:
+        return redirect('/')
+
+    user = User.query.get(username)
+    form = FeedbackForm()
+
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+
+        feedback = Feedback(title=title, content=content, username=username)
+
+        db.session.add(feedback)
+        db.session.commit()
+
+        return redirect(f"/users/{user.username}")
+
+    return render_template("new_feedback.html", form=form, user=user)
+
+
+
