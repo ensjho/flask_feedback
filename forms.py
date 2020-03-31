@@ -1,18 +1,18 @@
 """Forms for feedback app."""
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SelectField, TextAreaField, BooleanField, TextField
+from wtforms import StringField, IntegerField, SelectField, TextAreaField, BooleanField, TextField, PasswordField
 from wtforms.validators import InputRequired, Length, NumberRange, URL, Optional
 
-class RegisterUserForm(FlaskForm):
-  """Form for registering users."""
 
+class RegisterUserForm(FlaskForm):
+    """Form for registering users."""
     username = StringField(
         "Username",
         validators=[InputRequired()],
     )
 
-    password = TextField(
+    password = PasswordField(
         "Password",
         validators=[InputRequired()],
     )
@@ -32,3 +32,15 @@ class RegisterUserForm(FlaskForm):
     )
 
 
+class LoginUserForm(FlaskForm):
+    """Form for logging in User"""
+
+    username = StringField(
+        "Username",
+        validators=[InputRequired()],
+    )
+
+    password = PasswordField(
+        "Password",
+        validators=[InputRequired()],
+    )
