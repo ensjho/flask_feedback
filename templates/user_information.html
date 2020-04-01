@@ -12,9 +12,10 @@
   {% for feedback in feedbacks %}
 
   <li>
+
     <h3>{{feedback.title}}</h3>
-    <button action="">Edit</button>
-    <h5>{{feedback.content}}</h5>
+    <h5>{{feedback.content}}</h5>      
+    <a href="/feedback/{{feedback.id}}/update">Edit Feedback</a>
   </li>
 
   {% endfor %}
